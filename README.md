@@ -3,4 +3,9 @@ build a drum loop, control the tempo, and the volume of each individual instrume
 
 Compatible for web, Android, and iOS.
 
-![alt text](<תמונה של WhatsApp‏ 2024-03-10 בשעה 16.15.32_c13986aa.jpg>)
+Screenshot:
+
+![Alt text](/screenshots/1.jpg)
+![Alt text](/screenshots/2.jpg)
+![Alt text](/screenshots/3.jpg)
+![Alt text](/screenshots/4.mp4)
