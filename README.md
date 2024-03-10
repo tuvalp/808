@@ -5,7 +5,6 @@ Compatible for web, Android, and iOS.
 
 Screenshot:
 
-![Alt text](/screenshots/1.jpg)
-![Alt text](/screenshots/2.jpg)
-![Alt text](/screenshots/3.jpg)
-![Alt text](/screenshots/4.mp4)
+![Main](/screenshots/1.jpg)
+![Volume](/screenshots/2.jpg)
+![Tempo](/screenshots/3.jpg)
