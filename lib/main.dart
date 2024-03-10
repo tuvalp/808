@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: '808',
+      debugShowCheckedModeBanner: false,
       home: SafeArea(child: MainScreen()),
     );
   }
