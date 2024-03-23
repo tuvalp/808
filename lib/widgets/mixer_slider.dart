@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
-class CoustomSlider extends StatefulWidget {
-  const CoustomSlider(this.title, this.value, this.setValue, {Key? key})
+class MixerSlider extends StatefulWidget {
+  const MixerSlider(this.title, this.index, this.value, this.setValue,
+      {Key? key})
       : super(key: key);
   final String title;
+  final int index;
   final double value;
-  final void Function(double) setValue;
+  final void Function(int, double) setValue;
   @override
-  _CoustomSliderState createState() => _CoustomSliderState();
+  _MixerSliderState createState() => _MixerSliderState();
 }
 
-class _CoustomSliderState extends State<CoustomSlider> {
+class _MixerSliderState extends State<MixerSlider> {
   late double _value;
 
   @override
@@ -23,11 +25,11 @@ class _CoustomSliderState extends State<CoustomSlider> {
   Widget build(BuildContext context) {
     return Container(
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          const SizedBox(width: 10),
+          const SizedBox(width: 20),
           SizedBox(
-            width: 70,
+            width: 100,
             child: Text(widget.title,
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -46,7 +48,7 @@ class _CoustomSliderState extends State<CoustomSlider> {
               child: Slider(
                 value: _value,
                 onChanged: (newValue) {
-                  widget.setValue(newValue);
+                  widget.setValue(widget.index, newValue);
                   setState(() {
                     _value = newValue;
                   });
@@ -62,7 +64,6 @@ class _CoustomSliderState extends State<CoustomSlider> {
                     fontWeight: FontWeight.w300,
                     color: Colors.grey)),
           ),
-          const SizedBox(width: 10),
         ],
       ),
     );

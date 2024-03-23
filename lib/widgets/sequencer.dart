@@ -1,64 +1,58 @@
+import 'package:_808/widgets/sequencer_row.dart';
 import 'package:flutter/material.dart';
 
-class Sequencer extends StatefulWidget {
-  const Sequencer(this.title, this.instrument, this.isPlaying, this.playerSlot,
-      {super.key});
-  final String title;
-  final List instrument;
+class Sequencer extends StatelessWidget {
+  final List instruments;
   final bool isPlaying;
+  final bool isPause;
   final int playerSlot;
+  const Sequencer({
+    required this.instruments,
+    required this.isPlaying,
+    required this.isPause,
+    required this.playerSlot,
+    Key? key,
+  }) : super(key: key);
 
-  @override
-  State<Sequencer> createState() => _SequencerState();
-}
-
-class _SequencerState extends State<Sequencer> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(
-          width: 60,
-          child: Text(
-            widget.title,
-            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w300),
+    return SizedBox(
+      width: double.infinity,
+      height: instruments.length * 50,
+      child: Stack(
+        children: [
+          Column(
+            children: [
+              ...instruments
+                  .map((instrument) => SequencerRow(
+                        instrument['name'],
+                        instrument['slot'],
+                        isPlaying,
+                        isPause,
+                        playerSlot,
+                      ))
+                  .toList(),
+            ],
           ),
-        ),
-        Row(children: [
-          for (var instrumentIndex = 0;
-              instrumentIndex < widget.instrument.length;
-              instrumentIndex++)
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  widget.instrument[instrumentIndex] =
-                      !widget.instrument[instrumentIndex];
-                });
-              },
-              child: Container(
-                  margin: const EdgeInsets.only(right: 4),
-                  width: 33,
-                  height: 33,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.deepOrange, width: 1),
-                    borderRadius: BorderRadius.circular(10),
-                    color: widget.instrument[instrumentIndex]
-                        ? widget.playerSlot == instrumentIndex
-                            ? widget.isPlaying
-                                ? Colors.deepOrange.shade500
-                                : Colors.deepOrange.shade300
-                            : Colors.deepOrange.shade300
-                        : widget.playerSlot == instrumentIndex
-                            ? widget.isPlaying
-                                ? Colors.grey.shade500
-                                : Colors.grey.shade200
-                            : Colors.grey.shade200,
-                  )),
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 50),
+            left: (isPlaying || (isPause && playerSlot > -1))
+                ? 95 + playerSlot * 34
+                : double.infinity,
+            top: (isPlaying || (isPause && playerSlot > -1))
+                ? 5
+                : double.infinity,
+            child: Container(
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(50, 255, 86, 34),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              width: 33,
+              height: (instruments.length * 50) - 10,
             ),
-        ]),
-      ],
+          ),
+        ],
+      ),
     );
   }
 }
