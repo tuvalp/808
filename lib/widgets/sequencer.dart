@@ -1,16 +1,12 @@
-import 'package:_808/widgets/sequencer_row.dart';
 import 'package:flutter/material.dart';
+import 'package:_808/utils/player.dart';
+import 'package:_808/widgets/sequencer_row.dart';
 
 class Sequencer extends StatelessWidget {
-  final List instruments;
-  final bool isPlaying;
-  final bool isPause;
-  final int playerSlot;
+  final PlaybackController playbackController;
+
   const Sequencer({
-    required this.instruments,
-    required this.isPlaying,
-    required this.isPause,
-    required this.playerSlot,
+    required this.playbackController,
     Key? key,
   }) : super(key: key);
 
@@ -18,28 +14,29 @@ class Sequencer extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: instruments.length * 50,
+      height: playbackController.instruments.length * 50,
       child: Stack(
         children: [
           Column(
             children: [
-              ...instruments
+              ...playbackController.instruments
                   .map((instrument) => SequencerRow(
-                        instrument['name'],
-                        instrument['slot'],
-                        isPlaying,
-                        isPause,
-                        playerSlot,
+                        instrument: instrument,
+                        playbackController: playbackController,
                       ))
                   .toList(),
             ],
           ),
           AnimatedPositioned(
             duration: const Duration(milliseconds: 50),
-            left: (isPlaying || (isPause && playerSlot > -1))
-                ? 95 + playerSlot * 34
+            left: (playbackController.isPlaying ||
+                    (playbackController.isPause &&
+                        playbackController.playerSlot > -1))
+                ? 95 + playbackController.playerSlot * 34
                 : double.infinity,
-            top: (isPlaying || (isPause && playerSlot > -1))
+            top: (playbackController.isPlaying ||
+                    (playbackController.isPause &&
+                        playbackController.playerSlot > -1))
                 ? 5
                 : double.infinity,
             child: Container(
@@ -48,7 +45,7 @@ class Sequencer extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               width: 33,
-              height: (instruments.length * 50) - 10,
+              height: (playbackController.instruments.length * 50) - 10,
             ),
           ),
         ],

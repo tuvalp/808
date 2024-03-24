@@ -1,13 +1,14 @@
-import 'package:_808/widgets/instrument_button.dart';
 import 'package:flutter/material.dart';
+import '../utils/player.dart';
+import 'instrument_button.dart';
 
 class InstrumentController extends StatelessWidget {
-  const InstrumentController(
-      this.instruments, this.isRecord, this.addToSequence,
-      {super.key});
-  final List instruments;
-  final bool isRecord;
-  final void Function(int) addToSequence;
+  const InstrumentController({
+    Key? key,
+    required this.playbackController,
+  }) : super(key: key);
+
+  final PlaybackController playbackController;
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +20,14 @@ class InstrumentController extends StatelessWidget {
           crossAxisSpacing: 5,
           mainAxisSpacing: 5,
           children: [
-            ...instruments
-                .map((instrument) => InstrumentButton(instrument['name'],
-                    instruments.indexOf(instrument), isRecord, addToSequence))
-                .toList()
+            ...playbackController.instruments
+                .map(
+                  (instrument) => InstrumentButton(
+                    instrument: instrument,
+                    playbackController: playbackController,
+                  ),
+                )
+                .toList(),
           ],
         ),
       ),

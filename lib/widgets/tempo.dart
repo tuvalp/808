@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:_808/utils/player.dart';
 
 class Tempo extends StatefulWidget {
-  const Tempo(this.bpm, this.setBpm, {super.key});
-  final int bpm;
-  final void Function(int) setBpm;
+  const Tempo({required this.playbackController, super.key});
+  final PlaybackController playbackController;
 
   @override
   State<Tempo> createState() => _TempoState();
@@ -13,15 +13,10 @@ class _TempoState extends State<Tempo> {
   TextEditingController controller = TextEditingController(text: "0");
   int displyValue = 0;
 
-  void updateBmp() {
-    setState(() {
-      controller.value = TextEditingValue(text: widget.bpm.toString());
-    });
-  }
-
   @override
   void initState() {
-    controller.value = TextEditingValue(text: widget.bpm.toString());
+    controller.value =
+        TextEditingValue(text: widget.playbackController.bpm.toString());
     super.initState();
   }
 
@@ -58,7 +53,8 @@ class _TempoState extends State<Tempo> {
                                   .toString(),
                             );
                           });
-                          widget.setBpm(int.parse(controller.value.text));
+                          widget.playbackController
+                              .setBpm(int.parse(controller.value.text));
                         },
                         iconSize: 56,
                         icon: const Icon(Icons.add_circle_rounded),
@@ -69,7 +65,8 @@ class _TempoState extends State<Tempo> {
                         height: 60,
                         child: TextFormField(
                           onEditingComplete: () {
-                            widget.setBpm(int.parse(controller.value.text));
+                            widget.playbackController
+                                .setBpm(int.parse(controller.value.text));
                           },
                           controller: controller,
                           textAlign: TextAlign.center,
@@ -95,7 +92,8 @@ class _TempoState extends State<Tempo> {
                                   .toString(),
                             );
                           });
-                          widget.setBpm(int.parse(controller.value.text));
+                          widget.playbackController
+                              .setBpm(int.parse(controller.value.text));
                         },
                         iconSize: 56,
                         icon: const Icon(Icons.remove_circle_rounded),

@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:_808/widgets/mixer_slider.dart';
 
-class Mixer extends StatefulWidget {
-  const Mixer(this.instruments, this.setVolume, {super.key});
+import 'package:_808/models/instrument.dart';
 
-  final List instruments;
-  final void Function(int, double) setVolume;
+class Mixer extends StatelessWidget {
+  const Mixer(this.instruments, {super.key});
 
-  @override
-  State<Mixer> createState() => _MixerState();
-}
+  final List<Instrument> instruments;
 
-class _MixerState extends State<Mixer> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -21,12 +17,10 @@ class _MixerState extends State<Mixer> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 10),
-            ...widget.instruments
+            ...instruments
                 .map((instrument) => MixerSlider(
-                    instrument["name"],
-                    widget.instruments.indexOf(instrument),
-                    instrument["volume"],
-                    widget.setVolume))
+                      instrument,
+                    ))
                 .toList(),
           ],
         ),

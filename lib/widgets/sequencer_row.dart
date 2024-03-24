@@ -1,22 +1,16 @@
-import 'package:_808/widgets/sequencer_button.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:_808/utils/player.dart';
+import 'package:_808/models/instrument.dart';
+import 'package:_808/widgets/sequencer_button.dart';
 
-class SequencerRow extends StatefulWidget {
-  const SequencerRow(this.title, this.instrument, this.isPlaying, this.isPause,
-      this.playerSlot,
-      {super.key});
-  final String title;
-  final List instrument;
-  final bool isPlaying;
-  final bool isPause;
-  final int playerSlot;
+class SequencerRow extends StatelessWidget {
+  const SequencerRow(
+      {required this.playbackController, required this.instrument, Key? key})
+      : super(key: key);
 
-  @override
-  State<SequencerRow> createState() => _SequencerRowState();
-}
+  final Instrument instrument;
+  final PlaybackController playbackController;
 
-class _SequencerRowState extends State<SequencerRow> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -33,7 +27,7 @@ class _SequencerRowState extends State<SequencerRow> {
             SizedBox(
               width: 70,
               child: Text(
-                widget.title,
+                instrument.name,
                 style:
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
               ),
@@ -41,25 +35,22 @@ class _SequencerRowState extends State<SequencerRow> {
             const SizedBox(width: 10),
             Row(children: [
               for (var instrumentIndex = 0;
-                  instrumentIndex < widget.instrument.length;
+                  instrumentIndex < instrument.slot.length;
                   instrumentIndex++)
                 Padding(
                   padding: const EdgeInsets.only(right: 1),
                   child: GestureDetector(
                     onTap: () {
-                      if (widget.instrument[instrumentIndex] == false) {
-                        AudioPlayer().play(AssetSource('${widget.title}.wav'));
+                      if (instrument.slot[instrumentIndex] == false) {
+                        instrument.play();
                       }
 
-                      setState(() {
-                        widget.instrument[instrumentIndex] =
-                            !widget.instrument[instrumentIndex];
-                      });
+                      instrument.changeSlot(instrumentIndex);
                     },
                     child: SequencerButton(
-                      active: widget.instrument[instrumentIndex],
-                      playing: widget.playerSlot == instrumentIndex,
-                      isPlaying: widget.isPlaying,
+                      active: instrument.slot[instrumentIndex],
+                      playing: playbackController.playerSlot == instrumentIndex,
+                      isPlaying: playbackController.isPlaying,
                     ),
                   ),
                 ),
@@ -74,10 +65,10 @@ class _SequencerRowState extends State<SequencerRow> {
                 child: AnimatedOpacity(
                   duration: const Duration(milliseconds: 50),
                   curve: Curves.easeOut,
-                  opacity:
-                      widget.isPlaying && widget.instrument[widget.playerSlot]
-                          ? 1
-                          : 0,
+                  opacity: playbackController.isPlaying &&
+                          instrument.slot[playbackController.playerSlot]
+                      ? 1
+                      : 0,
                   child: Container(
                     width: 10,
                     height: 10,

@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:_808/models/instrument.dart';
 
 class MixerSlider extends StatefulWidget {
-  const MixerSlider(this.title, this.index, this.value, this.setValue,
-      {Key? key})
-      : super(key: key);
-  final String title;
-  final int index;
-  final double value;
-  final void Function(int, double) setValue;
+  const MixerSlider(this.instrument, {Key? key}) : super(key: key);
+  final Instrument instrument;
+
   @override
   _MixerSliderState createState() => _MixerSliderState();
 }
@@ -17,20 +14,20 @@ class _MixerSliderState extends State<MixerSlider> {
 
   @override
   void initState() {
-    _value = widget.value;
+    _value = widget.instrument.volume;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           const SizedBox(width: 20),
           SizedBox(
             width: 100,
-            child: Text(widget.title,
+            child: Text(widget.instrument.name,
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           ),
@@ -48,7 +45,8 @@ class _MixerSliderState extends State<MixerSlider> {
               child: Slider(
                 value: _value,
                 onChanged: (newValue) {
-                  widget.setValue(widget.index, newValue);
+                  widget.instrument
+                      .setVolume(newValue); //(widget.index, newValue);
                   setState(() {
                     _value = newValue;
                   });

@@ -1,21 +1,17 @@
+import 'package:_808/utils/player.dart';
 import 'package:flutter/material.dart';
 
-class Footer extends StatefulWidget {
-  final void Function() play;
-  final void Function() stop;
-  final void Function() pause;
-  final void Function() record;
-  final bool isPlaying;
+class Footer extends StatelessWidget {
+  final PlaybackController playbackController;
   final void Function() openMixer;
   final void Function() openTempo;
-  const Footer(this.play, this.stop, this.pause, this.record, this.isPlaying,
-      this.openMixer, this.openTempo);
+  const Footer(
+      {required this.playbackController,
+      required this.openMixer,
+      required this.openTempo,
+      Key? key})
+      : super(key: key);
 
-  @override
-  State<Footer> createState() => _FooterState();
-}
-
-class _FooterState extends State<Footer> {
   @override
   Widget build(BuildContext context) {
     return Row(children: [
@@ -25,7 +21,7 @@ class _FooterState extends State<Footer> {
         height: 3,
       )),
       GestureDetector(
-        onTap: widget.openMixer,
+        onTap: openMixer,
         child: Container(
           width: 50,
           height: 50,
@@ -60,7 +56,7 @@ class _FooterState extends State<Footer> {
           Align(
             alignment: Alignment.centerLeft,
             child: GestureDetector(
-              onTap: widget.stop,
+              onTap: () => playbackController.stop(),
               child: Container(
                 width: 55,
                 height: 55,
@@ -79,7 +75,9 @@ class _FooterState extends State<Footer> {
           Align(
             alignment: Alignment.center,
             child: GestureDetector(
-              onTap: widget.isPlaying ? widget.pause : widget.play,
+              onTap: () => playbackController.isPlaying
+                  ? playbackController.pause()
+                  : playbackController.play(),
               child: Container(
                 width: 80,
                 height: 80,
@@ -88,7 +86,7 @@ class _FooterState extends State<Footer> {
                   color: Colors.deepOrange,
                 ),
                 child: Icon(
-                  widget.isPlaying
+                  playbackController.isPlaying
                       ? Icons.pause_rounded
                       : Icons.play_arrow_rounded,
                   color: Colors.white,
@@ -100,7 +98,9 @@ class _FooterState extends State<Footer> {
           Align(
             alignment: Alignment.centerRight,
             child: GestureDetector(
-              onTap: widget.isPlaying ? widget.pause : widget.record,
+              onTap: playbackController.isPlaying
+                  ? playbackController.pause
+                  : playbackController.record,
               child: Container(
                 width: 55,
                 height: 55,
@@ -124,7 +124,7 @@ class _FooterState extends State<Footer> {
         height: 3,
       )),
       GestureDetector(
-        onTap: widget.openTempo,
+        onTap: openTempo,
         child: Container(
           width: 50,
           height: 50,

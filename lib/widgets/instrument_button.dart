@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:_808/utils/player.dart';
+import 'package:_808/models/instrument.dart';
 
-class InstrumentButton extends StatefulWidget {
-  final String name;
-  final int index;
-  final bool isRecord;
-  final Function(int) addToSequence;
+class InstrumentButton extends StatelessWidget {
   const InstrumentButton(
-      this.name, this.index, this.isRecord, this.addToSequence,
-      {super.key});
+      {required this.instrument, required this.playbackController, super.key});
+  final Instrument instrument;
+  final PlaybackController playbackController;
 
-  @override
-  State<InstrumentButton> createState() => _InstrumentButtonState();
-}
-
-class _InstrumentButtonState extends State<InstrumentButton> {
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -24,9 +17,9 @@ class _InstrumentButtonState extends State<InstrumentButton> {
         borderRadius: BorderRadius.circular(20),
         splashColor: Colors.deepOrange.shade200,
         onTap: () async {
-          await AudioPlayer().play(AssetSource('${widget.name}.wav'));
-          if (widget.isRecord) {
-            widget.addToSequence(widget.index);
+          instrument.play();
+          if (playbackController.isRecord) {
+            instrument.changeSlot(playbackController.playerSlot);
           }
         },
         child: Container(
@@ -51,7 +44,7 @@ class _InstrumentButtonState extends State<InstrumentButton> {
               ),
               Center(
                 child: Text(
-                  widget.name,
+                  instrument.name,
                   style: const TextStyle(
                       fontSize: 14, fontWeight: FontWeight.bold),
                 ),
