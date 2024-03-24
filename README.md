@@ -6,5 +6,6 @@ Compatible for web, Android, and iOS.
 Screenshot:
 
 ![Main](/screenshots/1.jpg)
-![Volume](/screenshots/2.jpg)
-![Tempo](/screenshots/3.jpg)
+![Playing](/screenshots/2.jpg)
+![Volume](/screenshots/3.jpg)
+![Tempo](/screenshots/4.jpg)
